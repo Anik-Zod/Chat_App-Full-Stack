@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import { createError } from "./createError.js";
-import jwt, { decode } from "jsonwebtoken";
+import jwt from "jsonwebtoken";
 
 export async function protectRoute(req, res, next) {
   try {
@@ -8,7 +8,6 @@ export async function protectRoute(req, res, next) {
     if (!token) {
       return next(createError(400, "Not authorized"));
     }
-
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     if (!decoded) return res.status(401).json({ message: "Unothorized" });
 
