@@ -25,6 +25,7 @@ export default function App() {
   return (
     <div>
        <Toaster position="top-center" reverseOrder={false} />
+       
       <Routes>
         <Route path='/' element={authUser ? <HomePage/> : <Navigate to="/login"/> } />
         <Route path='/signup' element={!authUser ? <SignUpPage/>: <Navigate to="/"/>} />
