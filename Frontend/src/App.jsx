@@ -10,12 +10,14 @@ import {Loader} from 'lucide-react'
 import { Toaster } from 'react-hot-toast';
 
 export default function App() {
-  const{authUser,checkAuth,isCheckingAuth}=useAuthStore()
+  const{authUser,checkAuth,isCheckingAuth,onlineUsers}=useAuthStore()
   
   useEffect(()=>{
     checkAuth()
   },[checkAuth])
-
+  
+  console.log("Online users :",onlineUsers)
+  
   if(isCheckingAuth && !authUser) return (
       <div>
          <Loader className="animate-spin w-10 h-10" />

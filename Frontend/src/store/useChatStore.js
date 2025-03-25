@@ -24,7 +24,6 @@ export const useChatStore  = create((set,get)=>({
 
     getMessages : async (userId)=>{
         if(!userId) return
-        console.log(userId);
         
         set({isMessagesLoading:true});
         try {

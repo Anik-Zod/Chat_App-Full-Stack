@@ -19,7 +19,8 @@ export default function Sidebar() {
     getUsers();
   }, [getUsers]);
 
-  if (isUsersLoading) return <p>User Loading ...</p>;
+  if (isUsersLoading) return <p className="text-white">User Loading ...</p>;
+
   return (
     <div className="w-80 h-screen bg-gray-900 text-white p-4 flex flex-col">
       {/* Header & Search */}
@@ -27,16 +28,19 @@ export default function Sidebar() {
         <h2 className="text-xl font-bold flex-1">Messenger</h2>
         <Edit className="w-5 h-5 cursor-pointer" />
       </div>
-      <input
-        type="text"
-        placeholder="Search"
-        className="w-full bg-gray-800 p-2 rounded-md mb-4 text-white outline-none"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-      />
+      <div className="relative mb-4">
+        <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
+        <input
+          type="text"
+          placeholder="Search"
+          className="w-full bg-gray-800 pl-10 pr-4 py-2 rounded-md text-white outline-none focus:ring-2 focus:ring-blue-500"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+      </div>
 
       {/* Stories Section */}
-      <div className="flex gap-3 overflow-x-auto mb-4">
+      <div className="flex gap-3 overflow-x-auto mb-4 scrollbar-hide">
         {stories.map((story) => (
           <div
             key={story.id}
@@ -53,28 +57,27 @@ export default function Sidebar() {
       </div>
 
       {/* Friends List */}
-      <div className=" flex-1 overflow-y-auto px-1  ">
+      <div className="flex-1 overflow-y-auto px-1 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         {users.map((user) => (
           <div
             key={user._id}
             onClick={() => setSelectedUser(user)}
             className={`flex items-center gap-3 p-2 my-1 rounded-lg hover:bg-gray-800 cursor-pointer ${
-              selectedUser?._id == user._id
+              selectedUser?._id === user._id
                 ? "bg-gray-800 ring-1 ring-gray-300"
                 : ""
             }`}
           >
-            <img
-              src={user.profilePic || "/avatar.png"}
-              alt={user.name}
-              className="w-10 h-10 rounded-full object-cover shrink-0"
-            />
-            {onlineUsers.includes(user._id) && (
-              <span
-                className="absolute bottom-0 right-0 size-3 bg-green-500 
-                  rounded-full ring-2 ring-zinc-900"
+            <div className="relative">
+              <img
+                src={user.profilePic || "/avatar.png"}
+                alt={user.name}
+                className="w-10 h-10 rounded-full object-cover shrink-0"
               />
-            )}
+              {onlineUsers.includes(user._id) && (
+                <span className="absolute bottom-0 right-0 w-3 h-3 bg-green-500 rounded-full ring-2 ring-gray-900" />
+              )}
+            </div>
             <div className="flex-1">
               <div className="flex justify-between">
                 <span className="font-semibold">{user?.fullName}</span>
