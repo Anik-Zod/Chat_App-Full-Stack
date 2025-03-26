@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+/* Customizing dark mode background and text colors */
+body {
+    background-color: #101828;
+    color: var(--text-color);
+  }

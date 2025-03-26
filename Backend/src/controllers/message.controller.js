@@ -1,4 +1,5 @@
 import cloudinary from "../lib/cloudinary.js";
+import { getReceiverSocketId, io } from "../lib/socket.js";
 import Message from "../models/message.model.js";
 import User from "../models/user.model.js";
 
@@ -54,7 +55,12 @@ export const sendMessage = async (req, res, next) => {
     });
     await newMessage.save();
 
-    //todo: realtime functionality goes here => Socket.io
+    //realtime functionality goes here => Socket.io
+    const ReceiverSocketId = getReceiverSocketId(receiverId);
+    if(ReceiverSocketId){
+      io.to(ReceiverSocketId).emit("newMessage",newMessage)
+    }
+
     res.status(200).json(newMessage);
   } catch (error) {
     next(error);
@@ -76,4 +82,3 @@ export const deleteMessage = async (req, res, next) => {
     res.status(500).json({ message: "An error occurred while deleting the message" });
   }
 };
-

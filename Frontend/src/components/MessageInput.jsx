@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { Image, Send, X } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
 
@@ -6,14 +6,29 @@ export default function MessageInput() {
   const [text, setText] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const fileInputRef = useRef(null);
-  const { sendMessages } = useChatStore();
+  const { sendMessages, startTyping, stopTyping } = useChatStore();
+  const typingTimeoutRef = useRef(null);
+
+  // Handle user typing
+  useEffect(() => {
+    if (text.trim()) {
+      startTyping();
+      clearTimeout(typingTimeoutRef.current);
+      typingTimeoutRef.current = setTimeout(() => {
+        stopTyping();
+      }, 2000); // Stops typing after 2 seconds of inactivity
+    } else {
+      stopTyping();
+    }
+
+    return () => clearTimeout(typingTimeoutRef.current);
+  }, [text]);
 
   // Handle file change and preview
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Check if the file type is an image
     if (!file.type.startsWith("image/")) {
       alert("Please upload a valid image file.");
       return;
@@ -29,7 +44,7 @@ export default function MessageInput() {
   // Remove image preview
   const removeImage = () => {
     setImagePreview(null);
-    if(fileInputRef.current) fileInputRef.current.value = "";
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
   // Handle sending message (either text or image)
@@ -39,6 +54,7 @@ export default function MessageInput() {
       sendMessages({ text, image: imagePreview });
       setText("");
       setImagePreview(null);
+      stopTyping();
     }
   };
 
@@ -51,7 +67,7 @@ export default function MessageInput() {
             <img
               src={imagePreview}
               alt="Preview"
-              className="w-20 h-20 object-cover rounded-lg border border-gray-200"
+              className="w-20 h-20 object-cover rounded-lg border border-gray-700"
             />
             <button
               onClick={removeImage}
@@ -65,13 +81,16 @@ export default function MessageInput() {
       )}
 
       {/* Message Input Form */}
-      <form onSubmit={handleSendMessage} className="m-5 flex items-center gap-3 bg-white p-3 rounded-full shadow-lg border border-gray-200">
+      <form
+        onSubmit={handleSendMessage}
+        className="m-5 flex items-center gap-3 bg-gray-800 p-3 rounded-full shadow-lg border border-gray-700"
+      >
         {/* Text Input */}
         <input
           type="text"
           value={text}
           onChange={(e) => setText(e.target.value)}
-          className="flex-1 px-4 py-2 text-gray-700 bg-gray-100 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
+          className="flex-1 px-4 py-2 text-gray-200 bg-gray-700 rounded-full focus:outline-none focus:ring-2 focus:ring-blue-400"
           placeholder="Type a message..."
         />
 
@@ -89,7 +108,9 @@ export default function MessageInput() {
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
-          className={`p-2 rounded-full text-gray-600 hover:bg-gray-200 transition duration-200 ${imagePreview ? 'text-emerald-500' : 'text-gray-400'}`}
+          className={`p-2 rounded-full text-gray-400 hover:bg-gray-600 transition duration-200 ${
+            imagePreview ? "text-emerald-500" : "text-gray-400"
+          }`}
         >
           <Image size={22} />
         </button>

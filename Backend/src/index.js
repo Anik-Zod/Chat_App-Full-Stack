@@ -8,6 +8,7 @@ import bodyParser from 'body-parser';
 import authRoutes from "./routes/auth.route.js"
 import messageRoutes from './routes/message.route.js'
 import { app,server, } from "./lib/socket.js"
+import groupRoutes from "./routes/group.route.js"
 
 dotenv.config()
 
@@ -27,6 +28,7 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 
 app.use("/api/auth",authRoutes)
 app.use("/api/messages",messageRoutes)
+app.use("/api/groups",groupRoutes)
 
 
 const port = process.env.PORT

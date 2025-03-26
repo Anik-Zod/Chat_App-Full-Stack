@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { Search, Circle, Edit } from "lucide-react";
 import { useChatStore } from "../store/useChatStore";
 import { useAuthStore } from "../store/useAuthStore";
+import GroupForm from "./GroupForm";
+import { useGroupStore } from "../store/useGroupStore";
 
 const stories = [
   { id: 1, name: "Happy Hour", img: "https://i.pravatar.cc/40?img=1" },
@@ -13,11 +15,17 @@ export default function Sidebar() {
   const { onlineUsers } = useAuthStore();
   const { getUsers, users, selectedUser, setSelectedUser, isUsersLoading } =
     useChatStore();
+  const { groups, getGroups,setSelectedGroup,selectedGroup } = useGroupStore();
+
   const [search, setSearch] = useState("");
+  
 
   useEffect(() => {
     getUsers();
-  }, [getUsers]);
+    getGroups();
+  }, [getGroups, getUsers]);
+
+  const [openGroup, setOpenGroup] = useState(false);
 
   if (isUsersLoading) return <p className="text-white">User Loading ...</p>;
 
@@ -26,7 +34,10 @@ export default function Sidebar() {
       {/* Header & Search */}
       <div className="flex items-center gap-2 mb-4">
         <h2 className="text-xl font-bold flex-1">Messenger</h2>
-        <Edit className="w-5 h-5 cursor-pointer" />
+        <Edit
+          onClick={() => setOpenGroup((state) => !state)}
+          className="w-5 h-5 cursor-pointer"
+        />
       </div>
       <div className="relative mb-4">
         <Search className="absolute left-3 top-2.5 text-gray-400 w-5 h-5" />
@@ -55,8 +66,39 @@ export default function Sidebar() {
           </div>
         ))}
       </div>
+      {/*Groups section*/}
+      {/* Groups Section */}
+      <hr className="my-1 border-gray-700" />
+      <h3 className="text-sm font-semibold mb-2">Groups</h3>
+
+      {groups.length > 0 ? (
+        <div className="grid grid-cols-5 gap-2 mb-4">
+          {groups.map((group) => (
+            <div onClick={()=>setSelectedGroup(group)} key={group._id} className="flex flex-col items-center cursor-pointer">
+              <img
+                className="ring-2 ring-cyan-400 w-12 h-12 rounded-full object-cover border border-gray-500"
+                src={group.image || "/default-group.png"}
+                alt={group.name}
+              />
+              <span className="text-xs text-gray-300 mt-1 truncate w-full text-center">
+                {group.name}
+              </span>
+            </div>
+          ))}
+        </div>
+      ) : (
+        <p className="text-gray-400 text-sm">No groups available.</p>
+      )}
+
+      {openGroup && (
+        <div className="-mt-20">
+          <GroupForm setOpenGroup={setOpenGroup} />
+        </div>
+      )}
 
       {/* Friends List */}
+      <hr className="my-1 border-gray-700" />
+      <h3 className="text-sm font-semibold mb-2">Friends</h3>
       <div className="flex-1 overflow-y-auto px-1 scrollbar-thin scrollbar-thumb-gray-700 scrollbar-track-gray-900">
         {users.map((user) => (
           <div
