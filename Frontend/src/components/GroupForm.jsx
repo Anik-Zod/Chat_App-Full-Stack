@@ -57,7 +57,7 @@ export default function GroupForm({ setOpenGroup }) {
   };
 
   return (
-    <div className="max-w-md mx-auto mt-10 p-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
+    <div className="max-w-md mx-auto -mt-10 p-6 bg-white dark:bg-gray-800 shadow-lg rounded-lg">
       <div className="flex justify-between">
         <h2 className="text-2xl font-semibold text-center mb-4 text-gray-900 dark:text-white">
           Create a Group

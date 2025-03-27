@@ -64,10 +64,7 @@ export async function login(req, res, next) {
         
         generateToken(user._id,res);
         const { password:_, ...otherDetails } = user._doc;
-        res.status(200).json({
-            message: "Login successful",
-            user: otherDetails,
-      });
+        res.status(200).json(otherDetails);
     } catch (error) {
         next(error)
     }

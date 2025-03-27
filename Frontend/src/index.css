@@ -5,3 +5,22 @@ body {
     background-color: #101828;
     color: var(--text-color);
   }
+
+/* For WebKit browsers (Chrome, Edge, Safari) */
+::-webkit-scrollbar {
+  width: 8px; /* Adjust width */
+}
+
+::-webkit-scrollbar-track {
+  background: #1a1a1a; /* Dark background */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #555; /* Grey color */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #888; /* Lighter on hover */
+}
