@@ -3,7 +3,7 @@ import { axiosInstance } from "../lib/axios.js";
 import toast from "react-hot-toast";
 import { io } from "socket.io-client";
 
-const BASE_URL =  "https://chat-app-full-stack-psi.vercel.app";
+const BASE_URL = "https://chat-app-full-stack-psi.vercel.app";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -98,6 +98,7 @@ export const useAuthStore = create((set, get) => ({
 
     const newSocket = io(BASE_URL, {
       query: { userId: authUser._id },
+      transports: ["websocket"], // Force WebSocket transport
     });
 
     newSocket.on("getOnlineUsers", (userIds) => {
