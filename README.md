@@ -27,8 +27,8 @@ The **Chat App Full Stack** is a real-time messaging application that uses moder
   - MongoDB
 
 ## Screen Shots ##
+<img width="1909" height="885" alt="image" src="https://github.com/user-attachments/assets/6e46e3bc-af4a-4b08-b274-48387bdcd169" />
 
-![Screenshot 2025-03-27 204023](https://github.com/user-attachments/assets/5f472cff-432f-4665-9a15-cc00c04c7d44)
 ## 📸Chatting ##
 ![Screenshot 2025-03-27 192046](https://github.com/user-attachments/assets/05576f5c-6ba7-49d3-8845-47ce058004a0)
 ## 📸Creating Group ##
