@@ -1,14 +1,14 @@
 import express from "express"
 import dotenv from 'dotenv'
-import {connectDB} from './lib/db.js'
+import connectDB from './src/lib/db.js'
 import cookieParser from "cookie-parser"
 import cors from 'cors'
 import bodyParser from 'body-parser'; 
 
-import authRoutes from "./routes/auth.route.js"
-import messageRoutes from './routes/message.route.js'
-import { app,server, } from "./lib/socket.js"
-import groupRoutes from "./routes/group.route.js"
+import authRoutes from "./src/routes/auth.route.js"
+import messageRoutes from './src/routes/message.route.js'
+import { app,server, } from "./src/lib/socket.js"
+import groupRoutes from "./src/routes/group.route.js"
 
 dotenv.config()
 
@@ -29,10 +29,13 @@ app.use(bodyParser.urlencoded({ limit: '50mb', extended: true }));
 app.use("/api/auth",authRoutes)
 app.use("/api/messages",messageRoutes)
 app.use("/api/groups",groupRoutes)
+app.use('/',(req,res)=>{
+    return res.json({message:"Server running"}
+)})
 
 
 const port = process.env.PORT
 server.listen(port,()=>{
     console.log(`http://localhost:${port}`);
-    connectDB()
+    connectDB();
 })
