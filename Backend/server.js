@@ -20,7 +20,7 @@ app.use(
   cors({
     origin: [
       "https://chat-app-full-stack-u4xj.vercel.app", // ✅ Frontend prod
-      "http://localhost:5173",                        // ✅ Local dev
+      "http://localhost:5173", // ✅ Local dev
     ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
@@ -39,8 +39,17 @@ app.use("/", (req, res) => {
   return res.json({ message: "Server running" });
 });
 
-const port = process.env.PORT;
-server.listen(port, () => {
-  console.log(`http://localhost:${port}`);
-  connectDB();
-});
+// Ensure DB connection before starting server
+const port = process.env.PORT || 5000;
+
+connectDB()
+  .then(() => {
+    // Start the server ONLY after DB is connected
+    server.listen(port, () => {
+      console.log(`Server running on http://localhost:${port}`);
+    });
+  })
+  .catch((err) => {
+    console.error("❌ Failed to connect to MongoDB:", err);
+    process.exit(1); // Exit if MongoDB connection fails
+  });
