@@ -18,7 +18,10 @@ app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 app.use(
   cors({
-    origin: "https://chat-app-full-stack-u4xj.vercel.app",
+    origin: [
+      "https://chat-app-full-stack-u4xj.vercel.app", // ✅ Frontend prod
+      "http://localhost:5173",                        // ✅ Local dev
+    ],
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
     allowedHeaders: ["Content-Type", "Authorization"],
