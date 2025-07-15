@@ -29,9 +29,9 @@ app.use(
 app.use(bodyParser.json({ limit: "50mb" })); // Set the max body size to 50MB (you can adjust this)
 app.use(bodyParser.urlencoded({ limit: "50mb", extended: true }));
 
-app.use("/api/auth", authRoutes);
-app.use("/api/messages", messageRoutes);
-app.use("/api/groups", groupRoutes);
+app.use("/auth", authRoutes);
+app.use("/messages", messageRoutes);
+app.use("/groups", groupRoutes);
 app.use("/", (req, res) => {
   return res.json({ message: "Server running" });
 });
